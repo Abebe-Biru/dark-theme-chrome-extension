@@ -144,11 +144,10 @@ Please report bugs or suggest enhancements by creating GitHub issues with:
 
 ## Screenshots
 
-*(Screenshots would be placed here showing:)*
-1. Popup interface with dark mode toggles
-2. Options page with settings and website management
-3. Example of dark mode applied to a popular website
-4. Website-specific settings management interface
+1. [Main popup interface](https://ibb.co/kgsPh6ZL)
+2. [Options/settings page](https://ibb.co/8ntWq9QX)
+3. [Website-specific dark mode controls](https://ibb.co/pBFH7z4w)
+4. [Extension behavior on a webpage](https://ibb.co/35Spq5FR)
 
 ## License
 
