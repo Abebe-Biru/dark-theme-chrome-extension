@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #2a2a2a;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #3a3a3a;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2a2a2a;
+            color: #e0e0e0;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #444;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .section h2 {
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h2 i {
+            font-size: 28px;
+        }
+        
+        .setting {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #444;
+            border-radius: 10px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .setting:hover {
+            background: #555;
+            transform: translateX(5px);
+        }
+        
+        .setting-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+        
+        .setting-description {
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        select, input[type="text"], input[type="number"] {
+            width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            background: #333;
+            color: #e0e0e0;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #666;
+        }
+        
+        .btn {
+            background: #555;
+            color: #e0e0e0;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: #666;
+        }
+        
+        .btn-secondary {
+            background: #444;
+        }
+        
+        .btn-danger {
+            background: #c0392b;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: #444;
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.3s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: #333;
+            transform: scale(1.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #444;
+            border-top: 1px solid #555;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+            color: #e0e0e0;
+        }
+        
+        .status-message.success {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+            display: block;
+        }
+        
+        .status-message.error {
+            background: rgba(192, 57, 43, 0.2);
+            color: #c0392b;
+            border-left: 4px solid #c0392b;
+            display: block;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            margin-top: 10px;
+            background: #333;
+            color: #e0e0e0;
+        }
+        
+        .import-export {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .import-export > div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ Modern Dark Theme Browser</h1>
+            <p>Customize your dark mode browsing experience</p>
+        </div>
+        
+        <div class="content">
+            <div id="statusMessage" class="status-message"></div>
+            
+            <!-- General Settings -->
+            <div class="section">
+                <h2>🌙 Dark Mode Settings</h2>
+                
+                <div class="setting">
+                    <div>
+                        <div class="setting-label">Enable Extension</div>
+                        <div class="setting-description">Turn the extension on or off</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="enableExtension" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting">
+                    <div>
+                        <div class="setting-label">Dark Mode</div>
+                        <div class="setting-description">Enable dark mode on all pages</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="darkMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting">
+                    <div>
+                        <div class="setting-label">Dark Mode Intensity</div>
+                        <div class="setting-description">Choose how dark the theme should be</div>
+                        <select id="darkModeIntensity">
+                            <option value="light">Light Dark</option>
+                            <option value="medium" selected>Medium Dark</option>
+                            <option value="deep">Deep Black</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting">
+                    <div>
+                        <div class="setting-label">Auto-apply to New Tabs</div>
+                        <div class="setting-description">Automatically apply dark mode to newly opened tabs</div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="autoApplyDarkMode" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Website Settings -->
+            <div class="section">
+                <h2>🌐 Website Settings</h2>
+                <div class="setting">
+                    <div>
+                        <div class="setting-label">Manage Website Exceptions</div>
+                        <div class="setting-description">Control dark mode for specific websites</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div class="button-group">
+                        <button id="saveAll" class="btn">💾 Save All Changes</button>
+                        <button id="resetToDefault" class="btn btn-secondary">🔄 Reset to Default</button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h3 style="color: #e0e0e0; margin-bottom: 10px;">Add Website Exception</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <input type="text" id="newWebsiteDomain" placeholder="Enter domain (e.g., example.com)" style="flex: 1;">
+                        <select id="newWebsiteSetting">
+                            <option value="disable">Disable Dark Mode</option>
+                            <option value="enable">Enable Dark Mode</option>
+                        </select>
+                        <button id="addWebsiteException" class="btn">Add</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #e0e0e0; margin-bottom: 10px;">Configured Websites</h3>
+                    <div id="websiteList" style="max-height: 300px; overflow-y: auto;">
+                        <!-- Website list will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- About -->
+            <div class="section">
+                <h2>ℹ️ About</h2>
+                <div class="setting">
+                    <div>
+                        <div class="setting-label">Extension Version</div>
+                        <div class="setting-description" id="versionInfo">1.0.0</div>
+                    </div>
+                </div>
+                
+                <div class="setting">
+                    <div>
+                        <div class="setting-label">Last Updated</div>
+                        <div class="setting-description" id="lastUpdated">Never</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Made with ❤️ | © 2024 Modern Dark Theme Browser</p>
+        </div>
+    </div>
+    
+    <script src="options.js"></script>
+</body>
+</html>
